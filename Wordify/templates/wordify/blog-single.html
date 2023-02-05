@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <section class="site-section py-lg">
+        <div class="container">
+            <div class="row blog-entries element-animate">
+                <div class="col-md-12 col-lg-8 main-content">
+                    <img src="{{ obj.image.url }}" alt="Image" class="img-fluid mb-5">
+                    <div class="post-meta">
+                        <span class="author mr-2"><img src="{{ obj.author.avatar.url }}" alt="Colorlib"
+                                                       class="mr-2"> {{ obj.author.user }}</span>&bullet;
+                        <span class="mr-2">{{ obj.created_at|date:'M d, Y' }}</span> &bullet;
+                        <span class="ml-2"><span class="fa fa-comments"></span> {{ obj.comments.count }}</span> &bullet;
+                        <span class="ml-2"><span class="fa fa-eye"></span> {{ obj.views }}</span>
+                    </div>
+                    <h1 class="mb-4">{{ obj.title }}</h1>
+{#                    {% for tag in obj.tags.all %}#}
+
+                        <a class="category mb-5" href="/">{{ obj.category }}</a>
+
+{#                    {% endfor %}#}
+                    <div class="post-content-body">
+                        <p>{{ obj.description }}</p>
+                        <div class="row mb-5">
+                            {% for j in obj.additionaltext.additionalpicture_set.all %}
+                                <div class="{% if j.is_vite == True %}col-md-12 mb-4{% elif j.is_vite == False %}col-md-6 mb-4{% endif %}">
+
+                                    <img src="{{ j.image.url }}" alt="Image placeholder"
+                                         class="img-fluid">
+                                </div>
+
+                            {% endfor %}
+                        </div>
+                        <p>{{ obj.additionaltext }}</p>
+                    </div>
+                    <div class="pt-5">
+                        <p>Categories: <a href="#">Food</a>, <a href="#">Travel</a> Tags: {% for tag in obj.tags.all %}
+
+                            <a class="category mb-5" href="/article/?tag={{ tag.title }}">{{ tag.title }}</a>
+
+                        {% endfor %}
+                    </div>
+                    <div class="pt-5">
+                        <h3 class="mb-5">{{ obj.comments.count }} Comments</h3>
+                        <ul class="comment-list">
+                                {% for com in obj.comments.all %}
+                            <li class="comment">
+                                    <div class="vcard">
+                                        {% if com.author.avatar %}
+                                            <img src="{{ com.author.avatar.url }}" alt="Image placeholder">
+                                        {% else %}
+                                            <img src="{% static 'images/img_5.jpg' %}" style="width: 50px" alt="Image placeholder">
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="comment-body">
+
+                                        <h3>{{ com.author }}</h3>
+                                        <div class="meta">{{ com.created_at|date:'M d, Y'}}</div>
+                                        <p>{{ com.description }}</p>
+                                    </div>
+                            </li>
+                                {% endfor %}
+
+                        </ul>
+
+                        <div class="comment-form-wrap pt-5">
+                            <h3 class="mb-5">Leave a comment</h3>
+                            <form method="post" class="p-5 bg-light">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    {{ form.description }}
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Post Comment" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                {% include 'wordify/sidebar.html' with tags=tags %}
+            </div>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="mb-3 ">Related Post</h2>
+                </div>
+            </div>
+            <div class="row">
+                {% for article in articles %}
+
+                    <div class="col-md-6 col-lg-4">
+                        <a href="{% url 'detail' article.pk %}" class="a-block sm d-flex align-items-center height-md"
+                           style="background-image: url({{ article.image.url }}); ">
+                            <div class="text">
+                                <div class="post-meta">
+                                    <span class="category">Lifestyle</span>
+                                    <span class="mr-2">{{ article.created_at|date:'M d, Y' }} </span> &bullet;
+                                    <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                                </div>
+                                <h3>{{ article.title }}</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

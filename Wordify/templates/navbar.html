@@ -1,0 +1,71 @@
+<header role="banner">
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-9 social">
+                    <a href="#"><span class="fa fa-twitter"></span></a>
+                    <a href="#"><span class="fa fa-facebook"></span></a>
+                    <a href="#"><span class="fa fa-instagram"></span></a>
+                    <a href="#"><span class="fa fa-youtube-play"></span></a>
+                </div>
+                <div class="col-3 search-top">
+                    <form action="{% url 'home' %}" class="search-top-form">
+                        {% csrf_token %}
+                        <span class="icon fa fa-search"></span>
+                        <input type="search" id="s" name="search" placeholder="Type keyword to search...">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container logo-wrap">
+        <div class="row pt-5">
+            <div class="col-12 text-center">
+                <a class="absolute-toggle d-block d-md-none" data-toggle="collapse" href="#navbarMenu" role="button"
+                   aria-expanded="false" aria-controls="navbarMenu"><span class="burger-lines"></span></a>
+                <h1 class="site-logo"><a href="{% url 'home' %}">Wordify</a></h1>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-md  navbar-light bg-light">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'article' %}">Articles</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown05"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown05">
+                            {% for category in categorys %}
+
+                                <a class="dropdown-item"
+                                   href="/article/?cat={{ category.title }}">{{ category.title }}</a>
+
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                </ul>
+
+                <div class="card">
+                    <li class="nav-link active" aria-current="page">
+                        <a href="/">{{ request.user.username }}</a>
+                        <a href="{% url 'logout' %}">LogOut</a>
+                    </li>
+                </div>
+
+
+            </div>
+        </div>
+    </nav>
+</header>

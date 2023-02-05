@@ -1,0 +1,84 @@
+{% load static %}
+<div class="col-md-12 col-lg-4 sidebar">
+    <div class="sidebar-box search-form-wrap">
+        <form action="{% url 'home' %}" class="search-form">
+            <div class="form-group">
+                <span class="icon fa fa-search"></span>
+                <input type="search" class="form-control" id="s"
+                       name="search" placeholder="Type a keyword and hit enter">
+            </div>
+        </form>
+    </div>
+
+    <div class="sidebar-box">
+{#        {% for profile in profiles %}#}
+            <div class="bio text-center">
+                {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" alt="Image Placeholder" class="img-fluid">
+                {% else %}
+                    <img src="{% static 'images/person_1.jpg' %}" alt="Image Placeholder" class="img-fluid">
+                {% endif %}
+                <div class="bio-body">
+                    <h2>{{ profile.user }}</h2>
+                    <p>{{ profile.bio }}</p>
+                    <p><a href="#" class="btn btn-primary btn-sm rounded">Read my bio</a></p>
+                    <p class="social">
+                        <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
+                        <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
+                        <a href="#" class="p-2"><span class="fa fa-instagram"></span></a>
+                        <a href="#" class="p-2"><span class="fa fa-youtube-play"></span></a>
+                    </p>
+                </div>
+            </div>
+
+
+{#        {% endfor %}#}
+    </div>
+
+    <div class="sidebar-box">
+        <h3 class="heading">Popular Posts</h3>
+        <div class="post-entry-sidebar">
+            <ul>
+                {% for article in articles %}
+                    <li>
+                        <a href="{% url 'detail' article.pk %}">
+                            <img src="{{ article.image.url }}" alt="Image placeholder" class="mr-4">
+                            <div class="text">
+                                <h4>{{ article.title }}</h4>
+                                <div class="post-meta">
+                                    <span class="mr-2">{{ article.created_at|date:'M d, Y' }} </span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="sidebar-box">
+        <h3 class="heading">Categories</h3>
+        <ul class="categories">
+            {% for category in categorys %}
+
+                <li>
+                    <a href="/article/?cat={{ category.title }}">{{ category.title }}<span>({{ category.category.count }})</span></a>
+                </li>
+
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="sidebar-box">
+        <h3 class="heading">Tags</h3>
+        <ul class="tags">
+            {% for tag in tags %}
+
+                <li><a href="/?tag={{ tag.title }}">{{ tag.title }}<span>({{ tag.tags.count }})</span></a></li>
+
+            {% endfor %}
+        </ul>
+    </div>
+</div>
